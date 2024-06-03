@@ -70,7 +70,7 @@ def diffiles(input1, input2, patchfile):
     
     subprocess.call("zip -r ../diff.zip * ", shell=True) 
     
-    os.chdir(DocLocation) 
+    os.chdir(current_working_directory) 
     
     shutil.copy(os.path.join(DocLocation, "diff.zip"), patchfile)  
     
@@ -113,6 +113,7 @@ def patchfiles(input1, patchfile, output1):
     
     # outputfile = os.path.join(current_working_directory, output1)
     
+    os.chdir(current_working_directory)
     
     shutil.copy(os.path.join(DocLocation, "restored.docx"), output1)
     
@@ -131,7 +132,6 @@ def main():
     args = sys.argv[1:]
     
     Passed = False
-    
     
     if len(args) == 4 and args[0] == "-diff":
         print("Applying diff")
@@ -157,25 +157,28 @@ def main():
 if __name__ == "__main__":
     
     
-    # Test files
+#     # Test files
+
+    Testing = False   #Enable to test without using command line
     
-    current_working_directory = os.getcwd()
-    
-    file1 = os.path.join(current_working_directory, "test/file1.docx")
-    file2 = os.path.join(current_working_directory, "test/file2.docx")
-    restored = os.path.join(current_working_directory, "test/restored.docx")
-    patchfile = os.path.join(current_working_directory, "test/diff.patch")
-    
-    
-    test = "diff"  
-    test = "patch"
-    
-    
-    if test == "diff":
-        sys.argv=["","-diff",file1, file2, patchfile]
+    if Testing:
+        current_working_directory = os.getcwd()
         
-    if test == "patch":
-        sys.argv=["","-patch",file1, patchfile, restored]
+        file1 = os.path.join(current_working_directory, "test/file1.docx")
+        file2 = os.path.join(current_working_directory, "test/file2.docx")
+        restored = os.path.join(current_working_directory, "test/restored.docx")
+        patchfile = os.path.join(current_working_directory, "test/diff.patch")
+        
+        
+        test = "diff"  
+        # test = "patch"   # Uncomment to test patching file
+        
+        
+        if test == "diff":
+            sys.argv=["","-diff",file1, file2, patchfile]
+            
+        if test == "patch":
+            sys.argv=["","-patch",file1, patchfile, restored]
     
     
     main( )
